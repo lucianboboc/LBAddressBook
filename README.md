@@ -14,3 +14,4 @@ How to use LBAddressBook
  
 4. To add contacts from a vCard to the address book database call the addContactsFromVCard: method.
  
+Enjoy!
