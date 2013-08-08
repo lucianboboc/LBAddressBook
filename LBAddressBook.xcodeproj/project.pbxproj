@@ -19,6 +19,8 @@
 		254A70E717B455AB00CDECB1 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 254A70E517B455AB00CDECB1 /* MainStoryboard.storyboard */; };
 		254A70EA17B455AB00CDECB1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 254A70E917B455AB00CDECB1 /* ViewController.m */; };
 		254A70F217B455B800CDECB1 /* LBAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 254A70F117B455B800CDECB1 /* LBAddressBook.m */; };
+		254A70F517B4562300CDECB1 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 254A70F317B4562300CDECB1 /* AddressBook.framework */; };
+		254A70F617B4562300CDECB1 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 254A70F417B4562300CDECB1 /* AddressBookUI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 		254A70E917B455AB00CDECB1 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		254A70F017B455B800CDECB1 /* LBAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBAddressBook.h; sourceTree = "<group>"; };
 		254A70F117B455B800CDECB1 /* LBAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBAddressBook.m; sourceTree = "<group>"; };
+		254A70F317B4562300CDECB1 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		254A70F417B4562300CDECB1 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +51,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				254A70F517B4562300CDECB1 /* AddressBook.framework in Frameworks */,
+				254A70F617B4562300CDECB1 /* AddressBookUI.framework in Frameworks */,
 				254A70CE17B455AB00CDECB1 /* UIKit.framework in Frameworks */,
 				254A70D017B455AB00CDECB1 /* Foundation.framework in Frameworks */,
 				254A70D217B455AB00CDECB1 /* CoreGraphics.framework in Frameworks */,
@@ -76,6 +82,8 @@
 		254A70CC17B455AB00CDECB1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				254A70F317B4562300CDECB1 /* AddressBook.framework */,
+				254A70F417B4562300CDECB1 /* AddressBookUI.framework */,
 				254A70CD17B455AB00CDECB1 /* UIKit.framework */,
 				254A70CF17B455AB00CDECB1 /* Foundation.framework */,
 				254A70D117B455AB00CDECB1 /* CoreGraphics.framework */,
