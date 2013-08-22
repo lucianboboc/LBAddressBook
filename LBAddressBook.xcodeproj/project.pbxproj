@@ -21,6 +21,7 @@
 		254A70F217B455B800CDECB1 /* LBAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 254A70F117B455B800CDECB1 /* LBAddressBook.m */; };
 		254A70F517B4562300CDECB1 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 254A70F317B4562300CDECB1 /* AddressBook.framework */; };
 		254A70F617B4562300CDECB1 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 254A70F417B4562300CDECB1 /* AddressBookUI.framework */; };
+		67E4D57117C6570B00886F23 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 67E4D57017C6570B00886F23 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		254A70F117B455B800CDECB1 /* LBAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBAddressBook.m; sourceTree = "<group>"; };
 		254A70F317B4562300CDECB1 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		254A70F417B4562300CDECB1 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		67E4D57017C6570B00886F23 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 				254A70E917B455AB00CDECB1 /* ViewController.m */,
 				254A70F017B455B800CDECB1 /* LBAddressBook.h */,
 				254A70F117B455B800CDECB1 /* LBAddressBook.m */,
+				67E4D57017C6570B00886F23 /* README.md */,
 				254A70D417B455AB00CDECB1 /* Supporting Files */,
 			);
 			path = LBAddressBook;
@@ -176,6 +179,7 @@
 				254A70E217B455AB00CDECB1 /* Default@2x.png in Resources */,
 				254A70E417B455AB00CDECB1 /* Default-568h@2x.png in Resources */,
 				254A70E717B455AB00CDECB1 /* MainStoryboard.storyboard in Resources */,
+				67E4D57117C6570B00886F23 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,6 +316,7 @@
 				254A70EF17B455AB00CDECB1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
