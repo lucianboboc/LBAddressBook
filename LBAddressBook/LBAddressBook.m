@@ -50,15 +50,154 @@
                         err = [NSError errorWithDomain: @"LBAddressBook" code: code userInfo: @{NSLocalizedDescriptionKey: stringError}];
                         completionBlock(NO,err);
                     }
-                        
+                    
                 }
             }
         });
     });
-
+    
     if(addressBook)
         CFRelease(addressBook);
 }
+
++ (NSArray *) getAllContacts
+{
+    ABAuthorizationStatus code = ABAddressBookGetAuthorizationStatus();
+    if(code != kABAuthorizationStatusAuthorized)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Message" message: [self getStringMessageForStatus:code] delegate:nil cancelButtonTitle: @"OK" otherButtonTitles: nil];
+        [alert show];
+        return nil;
+    }
+    else
+    {
+        ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+        
+        CFArrayRef personsArray = ABAddressBookCopyArrayOfAllPeople(addressBook);
+        
+        CFRelease(addressBook);
+        
+        return (__bridge_transfer NSArray*)personsArray;
+    }
+}
+
+
+
+
++ (NSData *)createVCardDataFromArray: (NSArray *) array
+{
+    ABAuthorizationStatus code = ABAddressBookGetAuthorizationStatus();
+    if(code != kABAuthorizationStatusAuthorized)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Message" message: [self getStringMessageForStatus:code] delegate:nil cancelButtonTitle: @"OK" otherButtonTitles: nil];
+        [alert show];
+        return nil;
+    }
+    else
+    {
+        if(!array)
+            return nil;
+        
+        ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+        
+        CFArrayRef personsArray = (__bridge CFArrayRef)array;
+        
+        CFDataRef vCardData = NULL;
+        if(personsArray)
+            vCardData = ABPersonCreateVCardRepresentationWithPeople(personsArray);
+        
+        if(addressBook != NULL)
+            CFRelease(addressBook);
+        
+        if(vCardData)
+            return (__bridge_transfer NSData *)vCardData;
+        return nil;
+    }
+}
+
+
+
+
++ (NSArray *) createArrayFromVCardData: (NSData *) vCardData
+{
+    ABAuthorizationStatus code = ABAddressBookGetAuthorizationStatus();
+    if(code != kABAuthorizationStatusAuthorized)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Message" message: [self getStringMessageForStatus:code] delegate:nil cancelButtonTitle: @"OK" otherButtonTitles: nil];
+        [alert show];
+        return nil;
+    }
+    else
+    {
+        if(!vCardData)
+            return nil;
+        ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+        ABRecordRef record = ABAddressBookCopyDefaultSource(addressBook);
+        
+        if(record)
+        {
+            CFArrayRef personsArray = ABPersonCreatePeopleInSourceWithVCardRepresentation(record, (__bridge CFDataRef)vCardData);
+            
+            CFRelease(record);
+            CFRelease(addressBook);
+            
+            if(personsArray)
+                return (__bridge_transfer NSArray *)personsArray;
+            else
+                return nil;
+        }
+        else
+        {
+            CFRelease(addressBook);
+            return nil;
+        }
+    }
+}
+
+
+
+
++ (NSUInteger) countContactsInVCardData: (NSData *) vCardData
+{
+    ABAuthorizationStatus code = ABAddressBookGetAuthorizationStatus();
+    if(code != kABAuthorizationStatusAuthorized)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Message" message: [self getStringMessageForStatus:code] delegate:nil cancelButtonTitle: @"OK" otherButtonTitles: nil];
+        [alert show];
+        return 0;
+    }
+    else
+    {
+        if(!vCardData)
+            return 0;
+        ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+        ABRecordRef record = ABAddressBookCopyDefaultSource(addressBook);
+        
+        if(record)
+        {
+            CFArrayRef personsArray = ABPersonCreatePeopleInSourceWithVCardRepresentation(record, (__bridge CFDataRef)vCardData);
+            
+            CFRelease(record);
+            CFRelease(addressBook);
+            
+            if(personsArray)
+            {
+                CFIndex count = CFArrayGetCount(personsArray);
+                CFRelease(personsArray);
+                return count;
+            }
+            else
+                return 0;
+        }
+        else
+        {
+            CFRelease(addressBook);
+            return 0;
+        }
+    }
+    
+}
+
 
 
 + (NSData *)createVCardData
@@ -130,7 +269,7 @@
         
         if(addressBook)
         {
-            ABAddressBookSave(addressBook, NULL);     
+            ABAddressBookSave(addressBook, NULL);
             CFRelease(addressBook);
         }
     }
@@ -166,7 +305,7 @@
                     }
                     CFRelease(personsArray);
                 }
-                CFRelease(record);                
+                CFRelease(record);
             }
             
             if(addressBook)
@@ -174,6 +313,92 @@
                 ABAddressBookSave(addressBook, NULL);
                 CFRelease(addressBook);
             }
+        }
+    }
+}
+
+
+
+
++ (NSMutableArray *) sortContactsFromArray: (NSArray *) contacts
+{
+    if(!contacts)
+        return nil;
+    
+    CFMutableArrayRef contactsMutable = CFArrayCreateMutableCopy(
+                                                                 kCFAllocatorDefault,
+                                                                 contacts.count,
+                                                                 (__bridge CFArrayRef)contacts
+                                                                 );
+    
+    if(contactsMutable)
+    {
+        CFArraySortValues(contactsMutable,
+                          CFRangeMake(0, CFArrayGetCount(contactsMutable)),
+                          (CFComparatorFunction) ABPersonComparePeopleByName,
+                          (void*) ABPersonGetSortOrdering());
+    }
+    
+    return (__bridge_transfer NSMutableArray *)contactsMutable;
+}
+
+
+
+
++ (BOOL) deleteContactWithRecord: (ABRecordRef) record
+{
+    ABAuthorizationStatus code = ABAddressBookGetAuthorizationStatus();
+    if(code != kABAuthorizationStatusAuthorized)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Message" message: [self getStringMessageForStatus:code] delegate:nil cancelButtonTitle: @"OK" otherButtonTitles: nil];
+        [alert show];
+        return NO;
+    }
+    else
+    {
+        if(!record)
+            return NO;
+        else
+        {
+            ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+            ABRecordRef refToDelete = ABAddressBookGetPersonWithRecordID(addressBook,ABRecordGetRecordID(record));
+            if(refToDelete != NULL)
+            {
+                bool success = ABAddressBookRemoveRecord(addressBook, refToDelete, NULL);
+                ABAddressBookSave(addressBook, NULL);
+                CFRelease(addressBook);
+                return success;
+            }
+            else
+            {
+                CFRelease(addressBook);
+                return NO;
+            }
+        }
+    }
+}
+
+
++ (BOOL) createContactWithRecord: (ABRecordRef) record
+{
+    ABAuthorizationStatus code = ABAddressBookGetAuthorizationStatus();
+    if(code != kABAuthorizationStatusAuthorized)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Message" message: [self getStringMessageForStatus:code] delegate:nil cancelButtonTitle: @"OK" otherButtonTitles: nil];
+        [alert show];
+        return NO;
+    }
+    else
+    {
+        if(!record)
+            return NO;
+        else
+        {
+            ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+            bool success = ABAddressBookAddRecord(addressBook, record, NULL);
+            ABAddressBookSave(addressBook, NULL);
+            CFRelease(addressBook);
+            return success;
         }
     }
 }
